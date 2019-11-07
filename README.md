@@ -19,6 +19,7 @@
 如果使用Abp相关模块，则使用起来比较简单，具体您可以参考相关单元测试的编写。主要有以下步骤：
 
 1. 引用对应的Abp的Nuget包
+
 如果仅需某个支付，仅需引用该支付的包。下面以通联支付为例，我们需要在工程中引用此包：
 
 | 名称     |      说明      |      Nuget      |
@@ -26,6 +27,7 @@
 | Magicodes.WxMiniProgram.Sdk.Abp  |微信小程序SDK Abp模块|   [![NuGet](https://buildstats.info/nuget/Magicodes.WxMiniProgram.Sdk.Abp)](https://www.nuget.org/packages/Magicodes.WxMiniProgram.Sdk.Abp) |
 
 2. 添加模块依赖
+
 在对应工程的Abp的模块（AbpModule）中，添加对“WxMiniProgramSdkModule”的依赖，如：
 
 ````C#
@@ -33,6 +35,7 @@
 ````
 
 3. 直接使用
+
 通过构造函数或者属性注入相关服务，即可直接使用。
 
 ## 如何配置？
