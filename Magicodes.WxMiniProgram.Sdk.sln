@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magicodes.WxMiniProgram.Sdk", "src\Magicodes.WxMiniProgram.Sdk\Magicodes.WxMiniProgram.Sdk.csproj", "{6BA1C2B7-219D-4FBC-8357-B5CCCF60D456}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{81ED8F6F-87EA-4321-BD52-79BF9E9418E3}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magicodes.Abp.WxMiniProgram.Sdk", "src\Magicodes.Abp.WxMiniProgram.Sdk\Magicodes.Abp.WxMiniProgram.Sdk.csproj", "{1A4E1B6A-0830-4234-87F8-45DC9268364B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{08547E40-6F15-4F40-8554-16435D228388}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "src\Test\Test.csproj", "{D9C7BDBA-9F1D-43AE-B2C4-F0D6DF43FD0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abp.Test", "src\Abp.Test\Abp.Test.csproj", "{70CB03E9-4A14-44C0-8E0C-F7671A597E1D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BA1C2B7-219D-4FBC-8357-B5CCCF60D456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BA1C2B7-219D-4FBC-8357-B5CCCF60D456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BA1C2B7-219D-4FBC-8357-B5CCCF60D456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BA1C2B7-219D-4FBC-8357-B5CCCF60D456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A4E1B6A-0830-4234-87F8-45DC9268364B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A4E1B6A-0830-4234-87F8-45DC9268364B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A4E1B6A-0830-4234-87F8-45DC9268364B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A4E1B6A-0830-4234-87F8-45DC9268364B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9C7BDBA-9F1D-43AE-B2C4-F0D6DF43FD0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9C7BDBA-9F1D-43AE-B2C4-F0D6DF43FD0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9C7BDBA-9F1D-43AE-B2C4-F0D6DF43FD0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9C7BDBA-9F1D-43AE-B2C4-F0D6DF43FD0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70CB03E9-4A14-44C0-8E0C-F7671A597E1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70CB03E9-4A14-44C0-8E0C-F7671A597E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70CB03E9-4A14-44C0-8E0C-F7671A597E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70CB03E9-4A14-44C0-8E0C-F7671A597E1D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D9C7BDBA-9F1D-43AE-B2C4-F0D6DF43FD0C} = {08547E40-6F15-4F40-8554-16435D228388}
+		{70CB03E9-4A14-44C0-8E0C-F7671A597E1D} = {08547E40-6F15-4F40-8554-16435D228388}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B9C9ACC4-9A63-419E-A25A-EF244431F081}
+	EndGlobalSection
+EndGlobal
