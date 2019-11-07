@@ -6,7 +6,7 @@
 //           filename : AccessTokenInfo.cs
 //           description :
 // 
-//           created by 雪雁 at  -- 
+//           created by 雪雁 at  2019-11-06 11:34
 //           文档官网：https://docs.xin-lai.com
 //           公众号教程：麦扣聊技术
 //           QQ群：85318032（编程交流）
@@ -21,12 +21,12 @@ namespace Magicodes.WxMiniProgram.Sdk.AccessToken.Models
     public class AccessTokenInfo : IAccessTokenInfo
     {
         /// <summary>
-        /// 访问Token
+        ///     访问Token
         /// </summary>
         public string AccessToken { get; set; }
 
         /// <summary>
-        /// 凭证过期时间
+        ///     凭证过期时间
         /// </summary>
         public DateTime ExpiresTime { get; set; }
     }

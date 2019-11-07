@@ -1,51 +1,49 @@
 ﻿// ======================================================================
-//  
-//          Copyright (C) 2016-2020 湖南心莱信息科技有限公司    
-//          All rights reserved
-//  
-//          filename : ApiBase.cs
-//          description :
-//  
-//          created by 李文强 at  2018/03/15 17:10
-//          Blog：http://www.cnblogs.com/codelove/
-//          GitHub ： https://github.com/xin-lai
-//          Home：http://xin-lai.com
-//  
+// 
+//           Copyright (C) 2019-2030 湖南心莱信息科技有限公司
+//           All rights reserved
+// 
+//           filename : ServiceBase.cs
+//           description :
+// 
+//           created by 雪雁 at  2019-11-04 15:18
+//           文档官网：https://docs.xin-lai.com
+//           公众号教程：麦扣聊技术
+//           QQ群：85318032（编程交流）
+//           Blog：http://www.cnblogs.com/codelove/
+// 
 // ======================================================================
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Castle.Core.Logging;
-using Castle.Windsor;
 using Magicodes.WxMiniProgram.Sdk.AccessToken;
-using Magicodes.WxMiniProgram.Sdk.Http;
 using Newtonsoft.Json;
 
 namespace Magicodes.WxMiniProgram.Sdk.Services
 {
     /// <summary>
-    /// 接口基类
+    ///     接口基类
     /// </summary>
     public abstract class ServiceBase
     {
-        public virtual IAccessTokenManager AccessTokenManager { get; set; }
-        public virtual HttpClient HttpClient { get; set; }
-
-        public ILogger Logger { get; set; }
+        /// <summary>
+        ///     微信API地址
+        /// </summary>
+        protected const string ApiRoot = "https://api.weixin.qq.com";
 
         protected ServiceBase()
         {
             Logger = NullLogger.Instance;
         }
 
-        /// <summary>
-        ///     微信API地址
-        /// </summary>
-        protected const string ApiRoot = "https://api.weixin.qq.com";
+        public virtual IAccessTokenManager AccessTokenManager { get; set; }
+        public virtual HttpClient HttpClient { get; set; }
+
+        public ILogger Logger { get; set; }
 
 
         /// <summary>
@@ -55,10 +53,9 @@ namespace Magicodes.WxMiniProgram.Sdk.Services
 
 
         /// <summary>
-        /// 配置Key
+        ///     配置Key
         /// </summary>
         public string Key { get; set; }
-
 
 
         /// <summary>
@@ -73,8 +70,9 @@ namespace Magicodes.WxMiniProgram.Sdk.Services
             Dictionary<string, string> urlParams = null)
         {
             var paramsStr = string.Empty;
-            if (urlParams != null && urlParams.Count > 0) paramsStr = urlParams.Aggregate(paramsStr, (current, item) => current +
-                                                                                                                        $"&{item.Key}={item.Value}");
+            if (urlParams != null && urlParams.Count > 0)
+                paramsStr = urlParams.Aggregate(paramsStr, (current, item) => current +
+                                                                              $"&{item.Key}={item.Value}");
             var urlMain = string.IsNullOrEmpty(apiAction) ? apiName : $"{apiName}/{apiAction}";
             return $"{apiRoot}/{urlMain}?access_token={AccessToken}{paramsStr}";
         }
@@ -209,7 +207,5 @@ namespace Magicodes.WxMiniProgram.Sdk.Services
             //RefreshAccessTokenWhenTimeOut(obj);
             return obj;
         }
-
-
     }
 }

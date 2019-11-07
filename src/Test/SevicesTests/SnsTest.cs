@@ -6,7 +6,7 @@
 //           filename : SnsTest.cs
 //           description :
 // 
-//           created by 雪雁 at  -- 
+//           created by 雪雁 at  2019-11-06 17:40
 //           文档官网：https://docs.xin-lai.com
 //           公众号教程：麦扣聊技术
 //           QQ群：85318032（编程交流）
@@ -14,9 +14,9 @@
 // 
 // ======================================================================
 
-using System;
 using System.Threading.Tasks;
 using Magicodes.WxMiniProgram.Sdk.Services.Sns;
+using Newtonsoft.Json;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -25,14 +25,14 @@ namespace Test.SevicesTests
 {
     public class SnsTest : TestBase
     {
-        private readonly ITestOutputHelper _testOutputHelper;
-        private readonly SnsAppService _snsAppService;
-
         public SnsTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
-            this._snsAppService = Resolve<SnsAppService>();
+            _snsAppService = Resolve<SnsAppService>();
         }
+
+        private readonly ITestOutputHelper _testOutputHelper;
+        private readonly SnsAppService _snsAppService;
 
         [Fact]
         public async Task JscodeToSession_Test()
@@ -47,8 +47,8 @@ namespace Test.SevicesTests
             //    }
             //})
             var result = await _snsAppService.JscodeToSession("001p0EE41cBD6L1KWLE41CZGE41p0EEl");
-            _testOutputHelper.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(result));
-            result.IsSuccess().ShouldBe(expected: true);
+            _testOutputHelper.WriteLine(JsonConvert.SerializeObject(result));
+            result.IsSuccess().ShouldBe(true);
             result.OpenId.ShouldNotBeNullOrWhiteSpace();
         }
     }

@@ -6,7 +6,7 @@
 //           filename : AccessTokenManager.cs
 //           description :
 // 
-//           created by 雪雁 at  -- 
+//           created by 雪雁 at  2019-11-06 11:34
 //           文档官网：https://docs.xin-lai.com
 //           公众号教程：麦扣聊技术
 //           QQ群：85318032（编程交流）
@@ -23,7 +23,6 @@ using Magicodes.WxMiniProgram.Sdk.Configs;
 namespace Magicodes.WxMiniProgram.Sdk.AccessToken
 {
     /// <summary>
-    /// 
     /// </summary>
     public class AccessTokenManager : IAccessTokenManager
     {
@@ -38,7 +37,7 @@ namespace Magicodes.WxMiniProgram.Sdk.AccessToken
         }
 
         /// <summary>
-        /// 获取AccessToken
+        ///     获取AccessToken
         /// </summary>
         /// <returns></returns>
         public Task<string> GetAccessTokenAsync()
@@ -47,7 +46,7 @@ namespace Magicodes.WxMiniProgram.Sdk.AccessToken
         }
 
         /// <summary>
-        /// 获取AccessToken
+        ///     获取AccessToken
         /// </summary>
         /// <returns></returns>
         public string GetAccessToken()

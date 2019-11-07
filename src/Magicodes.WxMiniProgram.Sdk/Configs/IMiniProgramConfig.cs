@@ -1,16 +1,17 @@
 ﻿// ======================================================================
-//  
-//          Copyright (C) 2016-2020 湖南心莱信息科技有限公司    
-//          All rights reserved
-//  
-//          filename : IWeChatConfig.cs
-//          description :
-//  
-//          created by 李文强 at  2018/04/10 17:10
-//          Blog：http://www.cnblogs.com/codelove/
-//          GitHub ： https://github.com/xin-lai
-//          Home：http://xin-lai.com
-//  
+// 
+//           Copyright (C) 2019-2030 湖南心莱信息科技有限公司
+//           All rights reserved
+// 
+//           filename : IMiniProgramConfig.cs
+//           description :
+// 
+//           created by 雪雁 at  2019-11-04 15:15
+//           文档官网：https://docs.xin-lai.com
+//           公众号教程：麦扣聊技术
+//           QQ群：85318032（编程交流）
+//           Blog：http://www.cnblogs.com/codelove/
+// 
 // ======================================================================
 
 namespace Magicodes.WxMiniProgram.Sdk.Configs
@@ -21,12 +22,12 @@ namespace Magicodes.WxMiniProgram.Sdk.Configs
     public interface IMiniProgramConfig
     {
         /// <summary>
-        /// 小程序ID
+        ///     小程序ID
         /// </summary>
         string MiniProgramAppId { get; set; }
 
         /// <summary>
-        /// 小程序密钥
+        ///     小程序密钥
         /// </summary>
         string MiniProgramAppSecret { get; set; }
     }
