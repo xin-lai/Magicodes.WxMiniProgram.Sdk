@@ -34,7 +34,7 @@ namespace Abp.Test.SevicesTests
         private readonly ITestOutputHelper _testOutputHelper;
         private readonly SnsAppService _snsAppService;
 
-        [Fact]
+        [Fact(Skip = "请先获取code")]
         public async Task JscodeToSession_Test()
         {
             //登录凭证校验Code请自己从小程序开发工具中获取

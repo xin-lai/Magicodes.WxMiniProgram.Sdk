@@ -17,7 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Magicodes.Abp.WxMiniProgram.Sdk\Magicodes.Abp.WxMiniProgram.Sdk.csproj" />
+    <ProjectReference Include="..\Magicodes.Abp.WxMiniProgram.Sdk\Magicodes.WxMiniProgram.Sdk.Abp.csproj" />
+    <ProjectReference Include="..\Magicodes.WxMiniProgram.Sdk.Abp\Magicodes.WxMiniProgram.Sdk.Abp.csproj" />
   </ItemGroup>
 
   <ItemGroup>
