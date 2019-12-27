@@ -14,6 +14,17 @@
 
 轻量级微信小程序SDK，以便于简单方便的实现小程序服务端API的调用。具体见单元测试。
 
+## 更新历史
+
+### 0.0.4
+
+------
+
+- [x] 重构AccessToken管理
+- [x] 添加对分布式架构支持（使用分布式缓存）
+- [x] 重构Http请求模块，移除HttpClient
+- [x] 添加获取二维码接口（Create、Get、GetUnlimited），详见单元测试
+
 ## 开始使用
 
 如果使用Abp相关模块，则使用起来比较简单，具体您可以参考相关单元测试的编写。主要有以下步骤：
@@ -62,6 +73,28 @@
 ## 非ABP集成
 
 请参考Abp相关模块的封装或者相关的单元测试代码，目前“Test”工程对应非ABP集成方式的使用，“Abp.Test”工程对应集成ABP之后的使用。
+
+## 注意
+
+为了支持分布式架构，已引入IDistributedCache来支持分布式缓存，在开发测试或单主机服务中，需使用以下代码进行注入：
+
+```csharp
+services.AddDistributedMemoryCache();
+```
+
+如需使用Redis，请参考下面代码：
+
+```csharp
+services.AddDistributedRedisCache(options =>
+{
+    options.Configuration = "localhost";
+    options.InstanceName = "SampleInstance";
+});
+```
+
+[相关文档请参考]: https://docs.microsoft.com/zh-cn/aspnet/core/performance/caching/distributed?view=aspnetcore-3.1#distributed-redis-cache
+
+
 
 ## 官方订阅号
 
