@@ -17,7 +17,6 @@
 using System;
 using System.Threading.Tasks;
 using Magicodes.WxMiniProgram.Sdk.Configs;
-using Magicodes.WxMiniProgram.Sdk.Services.QRCode.Dto;
 using Magicodes.WxMiniProgram.Sdk.Services.Sns.Dto;
 
 namespace Magicodes.WxMiniProgram.Sdk.Services.QRCode
@@ -27,8 +26,6 @@ namespace Magicodes.WxMiniProgram.Sdk.Services.QRCode
     /// </summary>
     public class QRCodeAppService : ServiceBase
     {
-        private const string ApiName = "wxa";
-
         /// <summary>
         /// 获取小程序二维码，适用于需要的码数量较少的业务场景。通过该接口生成的小程序码，永久有效，有数量限制
         /// https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.createQRCode.html
@@ -41,8 +38,8 @@ namespace Magicodes.WxMiniProgram.Sdk.Services.QRCode
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("参数不能为空！", nameof(path));
             return await DownloadData("cgi-bin/wxaapp/createwxaqrcode?access_token={ACCESS_TOKEN}", RestSharp.Method.POST, new
             {
-                path = path,
-                width = width
+                path,
+                width
             });
         }
 
@@ -62,8 +59,8 @@ namespace Magicodes.WxMiniProgram.Sdk.Services.QRCode
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("参数不能为空！", nameof(path));
             return await DownloadData("wxa/getwxacode?access_token={ACCESS_TOKEN}", RestSharp.Method.POST, new
             {
-                path = path,
-                width = width,
+                path,
+                width,
                 auto_color = autoColor,
                 line_color = lineColor ?? new { r = 0, g = 0, b = 0 },
                 is_hyaline = isHyaline

@@ -23,7 +23,7 @@ using Xunit.Abstractions;
 
 namespace Abp.Test.SevicesTests
 {
-    public class TokenTest : TestBase
+    public class TokenTest : AbpTestBase
     {
         public TokenTest(ITestOutputHelper testOutputHelper)
         {

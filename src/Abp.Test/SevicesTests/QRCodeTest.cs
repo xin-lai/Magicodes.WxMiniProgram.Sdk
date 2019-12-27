@@ -27,7 +27,7 @@ using Xunit.Abstractions;
 
 namespace Test.SevicesTests
 {
-    public class QRCodeTest : TestBase
+    public class QRCodeTest : AbpTestBase
     {
         public QRCodeTest(ITestOutputHelper testOutputHelper)
         {

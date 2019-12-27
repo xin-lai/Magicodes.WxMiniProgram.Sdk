@@ -23,16 +23,16 @@ using Xunit.Abstractions;
 
 namespace Abp.Test.SevicesTests
 {
-    public class SnsTest : TestBase
+    public class SnsTest : AbpTestBase
     {
         public SnsTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
-            _snsAppService = Resolve<QRCodeAppService>();
+            _snsAppService = Resolve<SnsAppService>();
         }
 
         private readonly ITestOutputHelper _testOutputHelper;
-        private readonly QRCodeAppService _snsAppService;
+        private readonly SnsAppService _snsAppService;
 
         [Fact(Skip = "«Îœ»ªÒ»°code")]
         public async Task JscodeToSession_Test()

@@ -21,18 +21,19 @@ using Magicodes.WxMiniProgram.Sdk.Services.Sns.Dto;
 
 namespace Magicodes.WxMiniProgram.Sdk.Services.Sns
 {
-    public class QRCodeAppService : ServiceBase
+    public class SnsAppService : ServiceBase
     {
         private const string ApiName = "sns";
         private readonly IMiniProgramConfig _config;
 
-        public QRCodeAppService(IMiniProgramConfig config)
+        public SnsAppService(IMiniProgramConfig config)
         {
             _config = config;
         }
 
         /// <summary>
         ///     根据登录凭证获取Sns信息（openid、session_key、unionid）
+        /// https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html
         /// </summary>
         /// <param name="code">登录时获取的 code</param>
         public async Task<GetSnsInfoByCodeOutput> JscodeToSession(string code)
