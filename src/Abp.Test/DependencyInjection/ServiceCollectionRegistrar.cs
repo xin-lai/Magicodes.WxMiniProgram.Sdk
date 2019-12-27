@@ -25,6 +25,8 @@ namespace Abp.Test.DependencyInjection
         public static void Register(IIocManager iocManager)
         {
             var services = new ServiceCollection();
+            //见：https://docs.microsoft.com/zh-cn/aspnet/core/performance/caching/distributed?view=aspnetcore-2.1
+            services.AddDistributedMemoryCache();
             WindsorRegistrationHelper.CreateServiceProvider(iocManager.IocContainer, services);
         }
     }

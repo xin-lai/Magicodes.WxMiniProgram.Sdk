@@ -18,6 +18,9 @@ using System.Threading.Tasks;
 
 namespace Magicodes.WxMiniProgram.Sdk.AccessToken
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IAccessTokenManager
     {
         /// <summary>
@@ -25,11 +28,5 @@ namespace Magicodes.WxMiniProgram.Sdk.AccessToken
         /// </summary>
         /// <returns></returns>
         Task<string> GetAccessTokenAsync();
-
-        /// <summary>
-        ///     获取AccessToken
-        /// </summary>
-        /// <returns></returns>
-        string GetAccessToken();
     }
 }

@@ -17,8 +17,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using Castle.Core.Logging;
 using Magicodes.WxMiniProgram.Sdk.AccessToken.Models;
 using Magicodes.WxMiniProgram.Sdk.Configs;
+using Magicodes.WxMiniProgram.Sdk.Services.Token;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Magicodes.WxMiniProgram.Sdk.AccessToken
 {
@@ -26,33 +29,41 @@ namespace Magicodes.WxMiniProgram.Sdk.AccessToken
     /// </summary>
     public class AccessTokenManager : IAccessTokenManager
     {
-        private readonly IMiniProgramConfig _miniProgramConfig;
+        private const string Key = "WxMiniProgramAccessToken";
 
-        protected ConcurrentDictionary<string, IAccessTokenInfo> Tokens =
-            new ConcurrentDictionary<string, IAccessTokenInfo>();
+        //见：https://docs.microsoft.com/zh-cn/aspnet/core/performance/caching/distributed?view=aspnetcore-2.1
+        private readonly IDistributedCache _cache;
+        private readonly TokenAppService _tokenApi;
 
-        public AccessTokenManager(IMiniProgramConfig miniProgramConfig)
+        /// <summary>
+        /// 
+        /// </summary>
+        public ILogger Logger { get; set; }
+
+        public AccessTokenManager(IDistributedCache cache, TokenAppService tokenApi)
         {
-            _miniProgramConfig = miniProgramConfig;
+            _cache = cache;
+            Logger = NullLogger.Instance;
+            _tokenApi = tokenApi;
         }
 
         /// <summary>
         ///     获取AccessToken
         /// </summary>
         /// <returns></returns>
-        public Task<string> GetAccessTokenAsync()
+        public async Task<string> GetAccessTokenAsync()
         {
-            throw new NotImplementedException();
+            var value = await _cache.GetStringAsync(Key);
+            if (!string.IsNullOrEmpty(value)) return value;
+
+            var result = await _tokenApi.GetAsync();
+            value = result.AccessToken;
+            Logger.Debug("Token获取成功...");
+            await _cache.SetStringAsync(Key, value,
+                new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(7000)));
+            Logger.Debug("Token已写入缓存...");
+            return value;
         }
 
-        /// <summary>
-        ///     获取AccessToken
-        /// </summary>
-        /// <returns></returns>
-        public string GetAccessToken()
-        {
-            //var token= Tokens.GetOrAdd(_miniProgramConfig)
-            throw new NotImplementedException();
-        }
     }
 }

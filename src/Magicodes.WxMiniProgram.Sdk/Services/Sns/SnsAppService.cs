@@ -21,12 +21,12 @@ using Magicodes.WxMiniProgram.Sdk.Services.Sns.Dto;
 
 namespace Magicodes.WxMiniProgram.Sdk.Services.Sns
 {
-    public class SnsAppService : ServiceBase
+    public class QRCodeAppService : ServiceBase
     {
         private const string ApiName = "sns";
         private readonly IMiniProgramConfig _config;
 
-        public SnsAppService(IMiniProgramConfig config)
+        public QRCodeAppService(IMiniProgramConfig config)
         {
             _config = config;
         }
@@ -37,12 +37,12 @@ namespace Magicodes.WxMiniProgram.Sdk.Services.Sns
         /// <param name="code">登录时获取的 code</param>
         public async Task<GetSnsInfoByCodeOutput> JscodeToSession(string code)
         {
-            if (string.IsNullOrWhiteSpace(code)) throw new ArgumentException("message", nameof(code));
+            if (string.IsNullOrWhiteSpace(code)) throw new ArgumentException("参数不能为空！", nameof(code));
             //获取api请求url
             var url =
                 $"{ApiName}/jscode2session?appid={_config.MiniProgramAppId}&secret={_config.MiniProgramAppSecret}&js_code={code}&grant_type=authorization_code";
 
-            return await GetAsync<GetSnsInfoByCodeOutput>(url);
+            return await HttpGet<GetSnsInfoByCodeOutput>(url);
         }
     }
 }

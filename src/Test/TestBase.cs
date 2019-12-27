@@ -16,8 +16,10 @@
 
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
+using Castle.Windsor.MsDependencyInjection;
 using Magicodes.WxMiniProgram.Sdk.Configs;
 using Magicodes.WxMiniProgram.Sdk.Installers;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Test
 {
@@ -38,6 +40,10 @@ namespace Test
                     })
                     .LifeStyle.Singleton
             );
+
+            var services = new ServiceCollection();
+            services.AddDistributedMemoryCache();
+            WindsorRegistrationHelper.CreateServiceProvider(Container, services);
         }
 
         protected IWindsorContainer Container { get; set; }

@@ -22,6 +22,9 @@ using System.Threading.Tasks;
 using Castle.Core.Logging;
 using Magicodes.WxMiniProgram.Sdk.AccessToken;
 using Newtonsoft.Json;
+using RestSharp;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json.Linq;
 
 namespace Magicodes.WxMiniProgram.Sdk.Services
 {
@@ -33,23 +36,32 @@ namespace Magicodes.WxMiniProgram.Sdk.Services
         /// <summary>
         ///     微信API地址
         /// </summary>
-        protected const string ApiRoot = "https://api.weixin.qq.com";
+        protected const string BaseApiUrl = "https://api.weixin.qq.com";
+        private const string AccessTokenString = "{ACCESS_TOKEN}";
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected ServiceBase()
         {
             Logger = NullLogger.Instance;
         }
 
-        public virtual IAccessTokenManager AccessTokenManager { get; set; }
-        public virtual HttpClient HttpClient { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public IAccessTokenManager AccessTokenManager { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public ILogger Logger { get; set; }
 
 
         /// <summary>
         ///     接口访问凭据
         /// </summary>
-        protected string AccessToken => AccessTokenManager.GetAccessToken();
+        protected string AccessToken => AccessTokenManager.GetAccessTokenAsync().Result;
 
 
         /// <summary>
@@ -57,6 +69,97 @@ namespace Magicodes.WxMiniProgram.Sdk.Services
         /// </summary>
         public string Key { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="resourceUrl"></param>
+        /// <param name="queryParameters"></param>
+        /// <returns></returns>
+        protected virtual async Task<T> HttpGet<T>(string resourceUrl, Dictionary<string, string> queryParameters = null) where T : ServiceOutputBase, new()
+        {
+            Logger.Debug($"GET {BaseApiUrl}/{resourceUrl}");
+            resourceUrl = SetAccessToken(resourceUrl);
+            var client = new RestClient(BaseApiUrl);
+            var request = new RestRequest(resourceUrl, Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            if (queryParameters != null && queryParameters.Count > 0)
+            {
+                foreach (var par in queryParameters)
+                {
+                    request.AddQueryParameter(par.Key, par.Value, true);
+                }
+            }
+            return await ReturnDataAsync<T>(client, request);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="resourceUrl"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual async Task<T> HttpPost<T>(string resourceUrl, object data = null) where T : ServiceOutputBase, new()
+        {
+            var client = CreateRestClient(resourceUrl, Method.POST, data, out var request);
+            return await ReturnDataAsync<T>(client, request);
+        }
+
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="resourceUrl"></param>
+        /// <param name="method"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual async Task<byte[]> DownloadData(string resourceUrl, Method method, object data = null)
+        {
+            var client = CreateRestClient(resourceUrl, method, data, out var request);
+            var response = await client.ExecuteTaskAsync(request);
+            Logger.Debug($"{response.StatusCode} {response.RawBytes.Length}");
+            if (response.Content.StartsWith("{"))
+            {
+                throw new MiniProgramArgumentException(JsonConvert.DeserializeObject<JObject>(response.Content)["errmsg"]?.ToString());
+            }
+            return response.RawBytes;
+        }
+
+
+        private RestClient CreateRestClient(string resourceUrl, Method method, object data, out RestRequest request)
+        {
+            Logger.Debug(
+                $"{method} {BaseApiUrl}/{resourceUrl}{(data != null ? Environment.NewLine + JsonConvert.SerializeObject(data) : string.Empty)}");
+
+            resourceUrl = SetAccessToken(resourceUrl);
+            var client = new RestClient(BaseApiUrl);
+            request = new RestRequest(resourceUrl, method);
+            request.AddHeader("cache-control", "no-cache");
+            if (data != null)
+            {
+                request.AddJsonBody(data);
+            }
+
+            return client;
+        }
+
+        private string SetAccessToken(string url)
+        {
+            if (url.IndexOf(AccessTokenString, StringComparison.CurrentCultureIgnoreCase) == -1)
+            {
+                return url;
+            }
+            url = url.Replace(AccessTokenString, AccessToken, StringComparison.CurrentCultureIgnoreCase);
+            return url;
+        }
+
+        private async Task<T> ReturnDataAsync<T>(RestClient client, RestRequest request) where T : ServiceOutputBase, new()
+        {
+            var response = await client.ExecuteTaskAsync(request);
+            Logger.Debug($"{response.StatusCode} {response.Content}");
+            var data = JsonConvert.DeserializeObject<T>(response.Content);
+            return data;
+        }
 
         /// <summary>
         ///     获取API访问Url
@@ -66,7 +169,7 @@ namespace Magicodes.WxMiniProgram.Sdk.Services
         /// <param name="apiRoot">API根路径</param>
         /// <param name="urlParams">url参数</param>
         /// <returns>API地址</returns>
-        protected string GetAccessApiUrl(string apiAction, string apiName, string apiRoot = ApiRoot,
+        protected string GetAccessApiUrl(string apiAction, string apiName, string apiRoot = BaseApiUrl,
             Dictionary<string, string> urlParams = null)
         {
             var paramsStr = string.Empty;
@@ -75,137 +178,6 @@ namespace Magicodes.WxMiniProgram.Sdk.Services
                                                                               $"&{item.Key}={item.Value}");
             var urlMain = string.IsNullOrEmpty(apiAction) ? apiName : $"{apiName}/{apiAction}";
             return $"{apiRoot}/{urlMain}?access_token={AccessToken}{paramsStr}";
-        }
-
-        /// <summary>
-        ///     获取请求JSON
-        /// </summary>
-        /// <param name="url">请求地址</param>
-        /// <returns>JSON字符串</returns>
-        protected virtual async Task<string> GetAsync(string url)
-        {
-            Logger.Debug(string.Format("pre Get{1}url:{0}", url, Environment.NewLine));
-            var result = await HttpClient.GetStringAsync(url);
-            Logger.Debug(string.Format("Get success {2}url:{0}{2}result:{1}", url, result,
-                Environment.NewLine));
-            return result;
-        }
-
-        ///// <summary>
-        /////     POST提交请求，返回ApiResult对象
-        ///// </summary>
-        ///// <typeparam name="T">ApiResult对象</typeparam>
-        ///// <param name="url">请求地址</param>
-        ///// <param name="obj">提交的数据对象</param>
-        ///// <param name="serializeStrFunc"></param>
-        ///// <returns>ApiResult对象</returns>
-        //protected T Post<T>(string url, object obj, Func<string, string> serializeStrFunc = null) where T : ServiceOutput
-        //{
-        //    var wr = new WeChatApiWebRequestHelper();
-        //    var result = wr.HttpPost<T>(url, obj, out string resultStr);
-        //    if (result != null)
-        //        result.DetailResult = resultStr;
-        //    RefreshAccessTokenWhenTimeOut(result);
-        //    return result;
-        //}
-
-        //protected T Post<T>(string url, object obj, Stream fileStream, Func<string, string> serializeStrFunc = null)
-        //    where T : ServiceOutput
-        //{
-        //    var wr = new WeChatApiWebRequestHelper();
-        //    var result = wr.HttpPost<T>(url, obj, out var resultStr);
-
-        //    if (result != null)
-        //        result.DetailResult = resultStr;
-        //    RefreshAccessTokenWhenTimeOut(result);
-        //    return result;
-        //}
-
-        ///// <summary>
-        ///// Token超时时自动刷新Token
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="result"></param>
-        //protected void RefreshAccessTokenWhenTimeOut<T>(T result) where T : ServiceOutput
-        //{
-        //    //if (result.ReturnCode == ReturnCodes.access_token超时 ||
-        //    //    result.ReturnCode == ReturnCodes.获取access_token时AppSecret错误或者access_token无效)
-        //    //{
-        //    //    WeChatHelper.LoggerAction?.Invoke("RefreshAccessTokenWhenTimeOut", ReturnCodes.获取access_token时AppSecret错误或者access_token无效.ToString() + "  Key:" + Key);
-        //    //    WeChatConfigManager.Current.RefreshAccessToken(Key);
-        //    //}
-        //}
-
-        ///// <summary>
-        /////     POST提交请求，返回ApiResult对象
-        ///// </summary>
-        ///// <typeparam name="T">ApiResult对象</typeparam>
-        ///// <param name="url">请求地址</param>
-        ///// <param name="jsonData">提交的数据</param>
-        ///// <returns>ApiResult对象</returns>
-        //protected T Post<T>(string url, string jsonData) where T : ServiceOutput
-        //{
-        //    var wr = new WeChatApiWebRequestHelper();
-
-        //    WeChatHelper.LoggerAction?.Invoke("api", string.Format("Pre POST Url:{0}；JSON：{1}；", url, jsonData));
-        //    var result = wr.HttpPost(url, jsonData);
-        //    var obj = JsonConvert.DeserializeObject<T>(result);
-        //    if (obj != null)
-        //        obj.DetailResult = result;
-        //    RefreshAccessTokenWhenTimeOut(obj);
-        //    return obj;
-        //}
-
-        ///// <summary>
-        /////     POST提交请求，上传文件，返回ApiResult对象
-        ///// </summary>
-        ///// <typeparam name="T">ApiResult对象</typeparam>
-        ///// <param name="url">请求地址</param>
-        ///// <param name="fileName">文件名称</param>
-        ///// <param name="fileStream">文件流</param>
-        ///// <returns></returns>
-        //protected T Post<T>(string url, string fileName, Stream fileStream) where T : ServiceOutput
-        //{
-        //    var wr = new WeChatApiWebRequestHelper();
-        //    var obj = wr.HttpPost<T>(url, fileName, fileStream, out var result);
-        //    if (obj != null)
-        //        obj.DetailResult = result;
-        //    RefreshAccessTokenWhenTimeOut(obj);
-        //    return obj;
-        //}
-
-
-        /// <summary>
-        ///     GET提交请求，返回ApiResult对象
-        /// </summary>
-        /// <typeparam name="T">ApiResult对象</typeparam>
-        /// <param name="url">请求地址</param>
-        /// <returns>ApiResult对象</returns>
-        protected async Task<T> GetAsync<T>(string url) where T : ServiceOutputBase
-        {
-            var result = await GetAsync(url);
-            var obj = JsonConvert.DeserializeObject<T>(result);
-            if (obj != null)
-                obj.DetailResult = result;
-            //RefreshAccessTokenWhenTimeOut(obj);
-            return obj;
-        }
-
-        /// <summary>
-        ///     GET提交请求，返回ApiResult对象
-        /// </summary>
-        /// <typeparam name="T">ApiResult对象</typeparam>
-        /// <param name="url">请求地址</param>
-        /// <param name="jsonConverts">Json转换器</param>
-        /// <returns>ApiResult对象</returns>
-        protected async Task<T> GetAsync<T>(string url, params JsonConverter[] jsonConverts) where T : ServiceOutputBase
-        {
-            var result = await GetAsync(url);
-            var obj = JsonConvert.DeserializeObject<T>(result, jsonConverts);
-            if (obj != null)
-                obj.DetailResult = result;
-            //RefreshAccessTokenWhenTimeOut(obj);
-            return obj;
         }
     }
 }

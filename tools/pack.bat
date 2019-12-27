@@ -19,4 +19,4 @@ dotnet pack %2 -c Release --output nupkgs
 for %%a in (dir /s /a /b "./nupkgs/%1") do (set nupkg=%%a)
 
 :: 推送包
-nuget push nupkgs/%nupkg% oy2lefbinn4qncstod3qutufbxckuokerlqx2shkhg2gfu -Source https://www.nuget.org/api/v2/package
+nuget push nupkgs/%nupkg% oy2cabxs5bawwzq7kbzq7edweujebdnepmjhd43ql5lrwm -Source https://www.nuget.org/api/v2/package

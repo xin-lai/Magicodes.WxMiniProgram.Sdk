@@ -28,11 +28,11 @@ namespace Abp.Test.SevicesTests
         public SnsTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
-            _snsAppService = Resolve<SnsAppService>();
+            _snsAppService = Resolve<QRCodeAppService>();
         }
 
         private readonly ITestOutputHelper _testOutputHelper;
-        private readonly SnsAppService _snsAppService;
+        private readonly QRCodeAppService _snsAppService;
 
         [Fact(Skip = "«Îœ»ªÒ»°code")]
         public async Task JscodeToSession_Test()

@@ -19,11 +19,13 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Magicodes.WxMiniProgram.Sdk.AccessToken;
-using Magicodes.WxMiniProgram.Sdk.Http;
 using Magicodes.WxMiniProgram.Sdk.Services;
 
 namespace Magicodes.WxMiniProgram.Sdk.Installers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class WxMiniProgramSdkInstaller : IWindsorInstaller
     {
         /// <summary>
@@ -34,9 +36,6 @@ namespace Magicodes.WxMiniProgram.Sdk.Installers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-                //注册微信HttpClient
-                Component.For<HttpClient>().Named(nameof(WxHttpClient)).ImplementedBy<WxHttpClient>()
-                    .LifestyleSingleton(),
                 //注册AccessToken管理器
                 Component.For<IAccessTokenManager>().ImplementedBy<AccessTokenManager>().LifestyleSingleton(),
                 //注册所有的服务
@@ -44,12 +43,6 @@ namespace Magicodes.WxMiniProgram.Sdk.Installers
                     .BasedOn<ServiceBase>()
                     .LifestyleTransient()
             );
-
-            //container.Register(
-            //    Component.For<IWindsorContainer>()
-            //        .Instance(container)
-            //        .LifeStyle.Singleton
-            //);
         }
     }
 }

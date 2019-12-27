@@ -42,9 +42,9 @@ namespace Magicodes.WxMiniProgram.Sdk.Services.Token
                 throw new MiniProgramArgumentException("没有找到小程序配置信息，请配置！");
 
             var url =
-                $"{ApiRoot}/cgi-bin/token?grant_type=client_credential&appid={_config.MiniProgramAppId}&secret={_config.MiniProgramAppSecret}";
+                $"{BaseApiUrl}/cgi-bin/token?grant_type=client_credential&appid={_config.MiniProgramAppId}&secret={_config.MiniProgramAppSecret}";
 
-            var result = await GetAsync<GetAccesstokenOutput>(url);
+            var result = await HttpGet<GetAccesstokenOutput>(url);
 
             if (result.IsSuccess())
                 result.ExpiresTime = DateTime.Now.AddSeconds(result.Expires - 30);
