@@ -4,6 +4,8 @@
 
 轻量级微信小程序SDK，支持.NET Framework以及.NET Core。目前已提供Abp模块的封装，支持开箱即用。
 
+<https://github.com/xin-lai/Magicodes.WxMiniProgram.Sdk>
+
 ## Nuget
 
 ### 新的包
@@ -245,13 +247,13 @@ public class TokenTest : AbpTestBase
     }
 }
 ```
+
 ## 官方订阅号
 
-关注“麦扣聊技术”订阅号免费获取：
+关注“麦扣聊技术”订阅号获取：
 
 * 最新文章、教程、文档
 * 视频教程
-* 基础版免费授权
 * 模板
 * 解决方案
 * 编程心得和理念
@@ -272,6 +274,5 @@ public class TokenTest : AbpTestBase
 ## 其他开源库地址
 
 - <https://gitee.com/magicodes/Magicodes.Admin.Core>
+- <https://github.com/dotnetcore/Magicodes.IE>
 - <https://github.com/xin-lai>
-
-
