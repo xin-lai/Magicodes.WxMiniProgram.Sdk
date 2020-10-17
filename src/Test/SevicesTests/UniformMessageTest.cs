@@ -19,7 +19,7 @@ namespace Test.SevicesTests
             _uniformMessageService = Resolve<UniformMessageAppService>();
             _miniProgramConfig = new DefaultMiniProgramConfig();
             _miniProgramConfig.MiniProgramAppId = "wxea60106d88226354";
-            _miniProgramConfig.MiniProgramAppSecret = "63b9f4d8d7a4e88a0c42955f1a9296ca";
+            _miniProgramConfig.MiniProgramAppSecret = "";
         }
 
 
