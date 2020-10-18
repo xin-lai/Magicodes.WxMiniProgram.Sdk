@@ -35,8 +35,8 @@ namespace Test
                 Component.For<IMiniProgramConfig>()
                     .Instance(new DefaultMiniProgramConfig
                     {
-                        MiniProgramAppId = "wx25fa5d55ef27e086",
-                        MiniProgramAppSecret = "ab02ac4499c9764108a78e19476d7101"
+                        MiniProgramAppId = "wxea60106d88226354",
+                        MiniProgramAppSecret = "63b9f4d8d7a4e88a0c42955f1a9296ca"
                     })
                     .LifeStyle.Singleton
             );

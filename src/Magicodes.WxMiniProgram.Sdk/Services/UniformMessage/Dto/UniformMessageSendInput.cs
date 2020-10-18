@@ -8,14 +8,8 @@ namespace Magicodes.WxMiniProgram.Sdk.Services.UniformMessage.Dto
     /// <summary>
     /// 下发小程序和公众号统一的服务消息 输入参数
     /// </summary>
-    public class UniformMessageSendInput
+    public class UniformMessageSendInput : ServiceInputBase
     {
-        /// <summary>
-        /// 接口调用凭证
-        /// </summary>
-        [JsonProperty("access_token")]
-        public string AccessToken { get; set; }
-
         /// <summary>
         /// 用户openid，可以是小程序的openid，也可以是mp_template_msg.appid对应的公众号的openid
         /// </summary>
@@ -32,6 +26,6 @@ namespace Magicodes.WxMiniProgram.Sdk.Services.UniformMessage.Dto
         /// 公众号模板消息相关的信息，可以参考公众号模板消息接口；有此节点并且没有weapp_template_msg节点时，发送公众号模板消息
         /// </summary>
         [JsonProperty("mp_template_msg")]
-        public MpTemplateMsgDto  MpTemplateMsg { get; set; }
+        public MpTemplateMsgDto MpTemplateMsg { get; set; }
     }
 }

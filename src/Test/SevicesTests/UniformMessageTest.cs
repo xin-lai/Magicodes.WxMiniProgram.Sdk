@@ -17,9 +17,7 @@ namespace Test.SevicesTests
         public UniformMessageTest()
         {
             _uniformMessageService = Resolve<UniformMessageAppService>();
-            _miniProgramConfig = new DefaultMiniProgramConfig();
-            _miniProgramConfig.MiniProgramAppId = "wxea60106d88226354";
-            _miniProgramConfig.MiniProgramAppSecret = "";
+            _miniProgramConfig = Resolve<IMiniProgramConfig>();
         }
 
 
@@ -35,18 +33,15 @@ namespace Test.SevicesTests
             };
             var result = await _uniformMessageService.SendAsync(new Magicodes.WxMiniProgram.Sdk.Services.UniformMessage.Dto.UniformMessageSendInput
             {
-                MpTemplateMsg = new Magicodes.WxMiniProgram.Sdk.Services.UniformMessage.Dto.MpTemplateMsgDto
-                {
-                    Appid = _miniProgramConfig.MiniProgramAppId,
-                    TemplateId = "SPYzk1nzIj9l3-60QvP_C_rS1xEHojhiQwduG2vOBxo",
-                    Url = "/pages/index/index",
-                    Miniprogram = "",
-                    Data = Newtonsoft.Json.JsonConvert.SerializeObject(data),
-                },
-                Touser = "oeDrz5Dv9UqAgHO6fopkUVhtAlD4",
+                Touser = "oeDrz5Dv9UqAgHO6fopkUVhtAlD4、" +
+                "",
                 WeappTemplateMsg = new Magicodes.WxMiniProgram.Sdk.Services.UniformMessage.Dto.WeappTemplateMsgDto
                 {
-
+                    EmphasisKeyword = "",
+                    FormId = "SPYzk1nzIj9l3-60QvP_C_rS1xEHojhiQwduG2vOBxo",
+                    Page = "/pages/index/index",
+                    TtemplateId = "SPYzk1nzIj9l3-60QvP_C_rS1xEHojhiQwduG2vOBxo",
+                    Data = Newtonsoft.Json.JsonConvert.SerializeObject(data),
                 },
             });
             result.IsSuccess().ShouldBe(true);
